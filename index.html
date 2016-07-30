@@ -8,6 +8,10 @@
 		<link rel='shortcut icon' href='images/favicon.ico' type='images/favicon.ico'/ >
 	</head>
 	<body>
+	<!--Mailchimp popup-->
+<script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/signup-forms/popup/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">require(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us13.list-manage.com","uuid":"ab895276351ad85b1407a7d33","lid":"8b3ecc77a5"}) })</script>
+<!--End Mailchimp popup-->
+
 
 		<!-- Wrapper -->
 			<div id="wrapper">
@@ -72,7 +76,32 @@
 					</section>
 
 				<!-- Main -->
+					
 					<div id="main">
+					<span id='mailing'>
+						<h2>Data Scientists, Engineers, and Analysts Mailing List</h2>
+						<p>I send occasional updates about data science, engineering, and analysis in Singapore. Sign up here!</p>
+						<!-- Begin MailChimp Signup Form -->
+						<link href="//cdn-images.mailchimp.com/embedcode/slim-10_7.css" rel="stylesheet" type="text/css">
+						<style type="text/css">
+							#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
+							/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+							   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+						</style>
+						<div id="mc_embed_signup">
+						<form action="//github.us13.list-manage.com/subscribe/post?u=ab895276351ad85b1407a7d33&amp;id=8b3ecc77a5" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+						    <div id="mc_embed_signup_scroll">
+							
+							<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+						    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+						    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_ab895276351ad85b1407a7d33_8b3ecc77a5" tabindex="-1" value=""></div>
+						    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+						    </div>
+						</form>
+					</span>
+
+					<!--End mc_embed_signup-->
+					</div>
 						<span id='datascience'></span>
 						<span>
 							<br><br><br>
@@ -95,6 +124,23 @@
                                 <a id='rent_map_method' class='image featured' href='rent_price_by_mrt.html'><img src='images/rent_price_preview.png'></a>
                                 <div><p>Rent price data was taken from URA and HDB. The nearest MRT station was found for each property, following which the average ppsf was calculated for each MRT station. For more details on generating the map with MRT stations, see <a href='http://nbviewer.jupyter.org/github/mirri66/geodata/blob/master/Extracting_MRT_data.ipynb'>this!</a></p></div>
 							</article>
+							<article class="post">
+								<header>
+									<div class="title" id='rent_map'>
+										<h2><a href="rent_price_by_mrt.html">Pycon 2016</a></h2>
+										<p>Creating Map Visualizations with Open Data and Folium</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2016-05-11">May 11, 2016</time>
+										<a href="http://github.com/mirri66" class="author"><span class="name">github</span><img src="images/github_icon.png" alt="" /></a>
+									</div>
+								</header>
+                                <a id='rent_map_method' class='image featured' href='rent_price_by_mrt.html'>
+                                	<iframe width="560" height="315" src="https://www.youtube.com/embed/PInO2Cluu2E" frameborder="0" allowfullscreen></iframe>
+                                </a>
+                                <div><p>I presented on map visualizations (and a little on xgboost) at Pycon 2016</p></div>
+							</article>
+							
 							<article class="post">
 								<header>
 									<div class="title">
@@ -389,6 +435,8 @@
   ga('send', 'pageview');
 
 </script>
+
+
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 	</body>
