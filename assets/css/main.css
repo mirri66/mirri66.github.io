@@ -18,6 +18,19 @@
 		vertical-align: baseline;
 	}
 
+    .blogheader {
+        text-decoration: italic;
+        color: grey;
+        font-size: 2em;
+    }
+
+    .fattyarrow {
+        text-decoration: bold;
+        text-align: center;
+        color: grey;
+        font-size: 5em;
+     }
+
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 		display: block;
 	}
@@ -54,6 +67,15 @@
 		-moz-box-sizing: border-box;
 		-webkit-box-sizing: border-box;
 		box-sizing: border-box;
+	}
+
+/* code blocks - grace */
+
+	.code{
+		border-radius: 25px;
+		border: #92989D solid 1px;
+		background-color: #92989D 
+    	padding: 2em; 
 	}
 
 /* Grid */
