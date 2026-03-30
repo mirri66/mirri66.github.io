@@ -5,29 +5,50 @@
          <meta name="description" content="Mr Nice Guy McTiger (and friends) - any resemblance to persons living or dead is purely coincidental.">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="stylesheet" href="assets/css/comics.css" />
         <link rel='shortcut icon' href='images/favicon.ico' type='images/favicon.ico'/ >
 </head>
 <body>
 <div id="wrapper">
-<header id='header'>
-<h1><a href="index.html">Grace Tang</a></h1>
-</header>
-<div style='text-align:center;'>
-<span class='fattyarrow'><a href='mctiger2.html'>&larr;</a></span>
-<span class='fattyarrow'><a href='chronickitty.html'>&rarr;</a></span>
-<br>
-<img width=500 src='images/mctiger3.png'>
+  <!-- Header powered by main.css -->
+  <header id="header">
+    <h1><a href="/">Grace Tang</a></h1>
+    <nav class="links">
+      <ul>
+        <li><a href="#fiction">Fiction</a></li>
+        <li><a href="#datascience">Data Science</a></li>
+        <li><a href="#psych">Psychology</a></li>
+        <li><a href="#tech">Tech</a></li>
+        <li><a href="#random">Random</a></li>
+        <li><a href="grace_tang.pdf">CV</a></li>
+        <li><a href="https://forms.gle/Y69JTGdFF4u5epSY7">Keep in touch</a></li>
+      </ul>
+    </nav>
+    <nav class="main">
+      <ul>
+        <li class="menu"><a class="fa-bars" href="#menu">Menu</a></li>
+      </ul>
+    </nav>
+  </header>
 </div>
+
+<!-- Comic Section -->
+<div class="comic-container">
+  <a href="mctiger2.html" class="arrow left">&larr; previous</a>
+  <a href="chronickitty.html" class="arrow right">next &rarr;</a>
+  <img src="images/mctiger3.png" alt="Mr Nice Guy McTiger" class="comic">
 </div>
+
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  (function(i,s,o,g,r,a,m){
+    i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-76086830-1', 'auto');
   ga('send', 'pageview');
-
-</script> 
+</script>
 </body>
 </html>
+
