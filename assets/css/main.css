@@ -24,12 +24,6 @@
         font-size: 2em;
     }
 
-    .fattyarrow {
-        text-decoration: bold;
-        text-align: center;
-        color: grey;
-        font-size: 5em;
-     }
 
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 		display: block;
