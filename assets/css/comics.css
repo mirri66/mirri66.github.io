@@ -16,7 +16,7 @@
 .arrow {
   position: absolute;
   top: -40px;         /* position above the image */
-  font-size: 2em;
+  font-size: 1em;
   color: black;
   text-decoration: none !important; /* force removal */
   font-weight: bold;
