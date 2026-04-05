@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-C5E3L1M6SC"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-C5E3L1M6SC');
+        </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Weakspeak — Scratch Away the Weak</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --paper:#f5f0e8;
+  --paper2:#ede8df;
+  --ink:#2c2416;
+  --ink2:#6b6050;
+  --ink3:#a09080;
+  --red:#c8442a;
+  --gold:#b8952a;
+  --sage:#4a7060;
+  --r:3px;
+}
+html,body{min-height:100vh;background:var(--paper2);color:var(--ink);font-family:'Lora',Georgia,serif;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
+
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* LANDING */
+#s-land{align-items:center;justify-content:center;padding:40px 24px;background:radial-gradient(ellipse at 60% 30%,#ede5d0,var(--paper2));}
+.land-inner{max-width:360px;width:100%;text-align:center;}
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:32px;}
+h1{font-size:clamp(42px,10vw,64px);font-weight:400;line-height:1.05;letter-spacing:-0.02em;margin-bottom:10px;}
+.sub{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--ink2);line-height:1.7;margin-bottom:40px;}
+.demo-line{display:block;font-size:15px;color:var(--ink2);margin-bottom:32px;line-height:1.8;}
+.demo-struck{color:var(--red);text-decoration:line-through;text-decoration-color:var(--red);}
+.demo-fix{color:var(--sage);font-style:italic;}
+.btn-start{display:block;width:100%;padding:16px 24px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--r);font-family:'Lora',serif;font-size:16px;cursor:pointer;transition:all 0.25s;margin-bottom:10px;}
+.btn-start:hover{background:var(--red);transform:translateY(-1px);}
+.btn-ghost{display:block;width:100%;padding:14px;background:transparent;border:1px solid var(--ink3);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--ink3);cursor:pointer;transition:all 0.2s;}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink);}
+
+/* GAME */
+#s-game{background:var(--paper2);}
+.game-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid rgba(0,0,0,0.08);background:var(--paper);}
+.hdr-logo{font-family:'Lora',serif;font-size:14px;font-style:italic;color:var(--ink2);}
+.hdr-score{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--ink2);}
+.hdr-score span{color:var(--ink);}
+.game-body{flex:1;padding:28px 24px;max-width:600px;margin:0 auto;width:100%;}
+.round-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.round-tag{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);}
+.progress-dots{display:flex;gap:6px;}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--paper2);border:1px solid var(--ink3);transition:all 0.4s;}
+.pdot.done{background:var(--sage);border-color:var(--sage);}
+.pdot.active{background:var(--ink);border-color:var(--ink);}
+.scratch-progress{background:rgba(0,0,0,0.06);height:2px;border-radius:1px;margin-bottom:24px;overflow:hidden;}
+.scratch-fill{height:100%;background:var(--sage);border-radius:1px;transition:width 0.3s;}
+.tip{text-align:center;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:var(--ink3);letter-spacing:0.04em;margin-bottom:18px;transition:opacity 0.4s;}
+.breathe{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sage);margin-right:5px;vertical-align:middle;animation:breathe 3s ease-in-out infinite;}
+@keyframes breathe{0%,100%{opacity:0.3;transform:scale(1);}50%{opacity:0.7;transform:scale(1.1);}}
+
+/* LETTER CARD */
+.letter{background:var(--paper);border:1px solid rgba(0,0,0,0.07);border-radius:4px;padding:28px 28px 32px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:22px;position:relative;}
+.letter::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(0,0,0,0.04) 27px,rgba(0,0,0,0.04) 28px);border-radius:4px;pointer-events:none;}
+.letter-meta{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(0,0,0,0.08);}
+.letter-subject{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:3px;}
+.letter-from{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:var(--ink3);}
+.letter-body{font-size:15px;line-height:1.9;color:var(--ink);position:relative;z-index:1;user-select:none;-webkit-user-select:none;}
+
+/* SCRATCHABLE */
+.scratchable{position:relative;display:inline-block;cursor:crosshair;}
+.scratchable canvas{position:absolute;top:0;left:0;pointer-events:none;z-index:3;}
+.word-text{position:relative;z-index:2;display:inline;color:var(--red);background:rgba(200,68,42,0.09);border-radius:2px;padding:1px 3px;}
+.replacement{display:none;position:relative;z-index:2;color:var(--sage);font-style:italic;padding:1px 2px;}
+.scratchable.scratched .word-text{opacity:0.15;}
+.scratchable.scratched .replacement{display:inline;animation:wordin 0.5s ease both;}
+.scratchable.scratched{cursor:default;pointer-events:none;}
+@keyframes wordin{from{opacity:0;transform:translateY(2px);}to{opacity:1;transform:translateY(0);}}
+
+/* FACT BUBBLE */
+.fact-bubble{background:rgba(0,0,0,0.03);border-left:2px solid var(--sage);border-radius:0 3px 3px 0;padding:10px 14px;margin-bottom:20px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:var(--ink2);line-height:1.6;opacity:0;transition:opacity 0.4s;pointer-events:none;}
+.fact-bubble.show{opacity:1;pointer-events:auto;}
+.fact-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px;}
+
+/* WELL DONE — always in DOM, faded in with opacity */
+.well-done{text-align:center;padding:16px 0 4px;opacity:0;pointer-events:none;transition:opacity 0.5s;}
+.well-done.show{opacity:1;pointer-events:auto;}
+.wd-label{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sage);margin-bottom:6px;}
+.wd-score{font-size:28px;font-weight:400;color:var(--ink);margin-bottom:20px;}
+.wd-score em{font-style:normal;color:var(--gold);}
+.btn-next{display:inline-block;padding:14px 36px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--r);font-family:'Lora',serif;font-size:15px;cursor:pointer;transition:all 0.25s;}
+.btn-next:hover{background:var(--red);}
+
+@keyframes letterin{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.letter-anim{animation:letterin 0.6s cubic-bezier(0.22,1,0.36,1) both;}
+
+/* LOGO */
+.logo-weak{position:relative;display:inline;color:var(--red);font-style:italic;}
+.logo-weak::after{content:'';position:absolute;left:0;top:52%;width:100%;height:1.5px;background:var(--red);opacity:0.5;transform:translateY(-50%);}
+.logo-speak{font-style:normal;color:var(--ink);}
+
+/* HOW TO PLAY MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(44,36,22,0.55);z-index:1000;align-items:flex-end;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal-sheet{background:var(--paper);border-radius:12px 12px 0 0;padding:28px 24px 36px;width:100%;max-width:480px;border-top:1px solid rgba(0,0,0,0.08);}
+.modal-handle{width:36px;height:3px;background:var(--ink3);border-radius:2px;margin:0 auto 24px;opacity:0.4;}
+.modal-title{font-family:'Lora',serif;font-size:18px;font-weight:500;margin-bottom:16px;color:var(--ink);}
+.modal-body{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--ink2);line-height:1.75;}
+.modal-body p{margin-bottom:10px;}
+.modal-body p:last-child{margin-bottom:0;}
+.modal-close{margin-top:24px;display:block;width:100%;padding:14px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--r);font-family:'Lora',serif;font-size:15px;cursor:pointer;transition:background 0.2s;}
+.modal-close:hover{background:var(--red);}
+
+/* LinkedIn share button */
+.btn-linkedin{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:#0A66C2;color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;cursor:pointer;transition:all 0.2s;margin-bottom:10px;}
+.btn-linkedin:hover{background:#004182;}
+#s-results{align-items:center;justify-content:center;padding:40px 24px;background:radial-gradient(ellipse at 40% 60%,#ede5d0,var(--paper2));}
+.results-inner{max-width:380px;width:100%;text-align:center;}
+.results-eyebrow{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+.results-big{font-size:clamp(56px,14vw,84px);font-weight:400;line-height:1;letter-spacing:-0.03em;color:var(--ink);margin-bottom:6px;}
+.results-tag{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--ink2);margin-bottom:32px;font-style:italic;}
+.r-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+.r-stat{background:var(--paper);border:1px solid rgba(0,0,0,0.07);border-radius:4px;padding:14px 12px;}
+.r-stat-val{font-size:22px;display:block;margin-bottom:2px;}
+.r-stat-key{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);}
+.btn-again{display:block;width:100%;padding:16px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--r);font-family:'Lora',serif;font-size:16px;cursor:pointer;transition:all 0.25s;margin-bottom:10px;}
+.btn-again:hover{background:var(--red);}
+.btn-menu2{display:block;width:100%;padding:14px;background:transparent;color:var(--ink2);border:1px solid var(--ink3);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;cursor:pointer;transition:all 0.2s;}
+.btn-menu2:hover{border-color:var(--ink);color:var(--ink);}
+/* HARD MODE — scratchable text looks normal */
+.hard-mode .word-text{color:var(--ink);background:none;border-radius:0;padding:0;}
+.hard-mode .scratchable{cursor:text;}
+.hard-mode .scratchable:hover .word-text{background:rgba(0,0,0,0.04);border-radius:2px;}
+
+/* Mode toggle on landing */
+.mode-toggle{display:flex;border:1px solid var(--ink3);border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
+.mode-btn{flex:1;padding:10px;background:transparent;border:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:var(--ink3);cursor:pointer;transition:all 0.2s;letter-spacing:0.03em;}
+.mode-btn.active{background:var(--ink);color:var(--paper);}
+.mode-btn.hard-active{background:var(--red);color:var(--paper);}
+
+/* Hard mode badge in header */
+.hard-badge{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);border-radius:3px;padding:2px 6px;opacity:0;transition:opacity 0.3s;}
+.hard-badge.show{opacity:1;}
+
+@media(min-width:600px){.game-body{padding:36px 40px;}.letter{padding:36px 40px 40px;}}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="s-land" class="screen active">
+  <div class="land-inner">
+    <div class="eyebrow">a writing game</div>
+    <h1><span class="logo-weak">Weak</span><span class="logo-speak">speak</span></h1>
+    <p class="sub">Every email hides self-undermining language.<br>Scratch it away. Say what you mean.</p>
+    <div class="demo-line">
+      I <span class="demo-struck">just</span> wanted to follow up.
+      <br>→ I wanted to follow up.
+    </div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-normal" onclick="setMode(false)">Normal</button>
+      <button class="mode-btn" id="btn-hard" onclick="setMode(true)">Hard — no highlights</button>
+    </div>
+    <button class="btn-start" onclick="startGame()">Begin →</button>
+    <button class="btn-ghost" onclick="howToPlay()">How to play</button>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="s-game" class="screen">
+  <div class="game-hdr">
+    <div class="hdr-logo"><span class="logo-weak">Weak</span><span class="logo-speak">speak</span></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="hard-badge" id="hard-badge">Hard</div>
+      <div class="hdr-score">score <span id="live-score">0</span></div>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="round-meta">
+      <div class="round-tag" id="round-tag">Letter 1</div>
+      <div class="progress-dots" id="progress-dots"></div>
+    </div>
+    <div class="scratch-progress"><div class="scratch-fill" id="scratch-fill"></div></div>
+    <div class="tip" id="tip"><span class="breathe"></span>Scratch away the red phrases</div>
+
+    <div class="letter letter-anim" id="letter-card">
+      <div class="letter-meta">
+        <div class="letter-subject" id="letter-subject"></div>
+        <div class="letter-from" id="letter-from"></div>
+      </div>
+      <div class="letter-body" id="letter-body"></div>
+    </div>
+
+    <div class="fact-bubble" id="fact-bubble">
+      <div class="fact-label">Why it's weak</div>
+      <div id="fact-text"></div>
+    </div>
+
+    <div class="well-done" id="well-done">
+      <div class="wd-label">Letter cleared</div>
+      <div class="wd-score">+<em id="pts-earned">0</em> pts</div>
+      <button class="btn-next" id="btn-next">Next letter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="s-results" class="screen">
+  <div class="results-inner">
+    <div class="results-eyebrow" id="results-eyebrow">All done</div>
+    <div class="results-big" id="r-score">0</div>
+    <div class="results-tag" id="r-tag"></div>
+    <div class="r-stats">
+      <div class="r-stat"><span class="r-stat-val" id="r-scratched">0</span><span class="r-stat-key">Scratched</span></div>
+      <div class="r-stat"><span class="r-stat-val" id="r-letters">0</span><span class="r-stat-key">Letters</span></div>
+    </div>
+    <button class="btn-again" onclick="startGame()">Play again</button>
+    <button class="btn-again" style="background:var(--red);margin-bottom:10px;" onclick="setMode(!G.hardMode);startGame()" id="btn-switch-mode">Try hard mode</button>
+    <button class="btn-linkedin" onclick="shareLinkedIn()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      Share on LinkedIn
+    </button>
+    <button class="btn-menu2" onclick="showScreen('land')">← Menu</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="htp-modal" onclick="closeHTP(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">How to play</div>
+    <div class="modal-body">
+      <p>Each email is written by someone undermining themselves — hedging, apologising, fishing for reassurance.</p>
+      <p>The self-defeating phrases are highlighted in <span style="color:var(--red)">red</span>. Scratch over them with your finger or mouse to cross them out.</p>
+      <p>A stronger version appears in <span style="color:var(--sage);font-style:italic">green</span> where needed. Sometimes nothing replaces it — the sentence is simply stronger without.</p>
+      <p>Clear all the phrases in a letter to move on.</p>
+      <p>In <strong style="color:var(--red)">hard mode</strong>, the phrases are not highlighted — you have to find them yourself.</p>
+    </div>
+    <button class="modal-close" onclick="closeHTP()">Got it</button>
+  </div>
+</div>
+
+<script>
+// ── AUDIO ──────────────────────────────────────────────────────────
+let ctx = null;
+
+function ensureAudio(){
+  if(!ctx) ctx = new(window.AudioContext||window.webkitAudioContext)();
+  if(ctx.state==='suspended') ctx.resume();
+}
+
+function playScratch(intensity){
+  if(!ctx) return;
+  const buf = ctx.createBuffer(1, ctx.sampleRate*0.04, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*intensity;
+  const src=ctx.createBufferSource(); src.buffer=buf;
+  const bp=ctx.createBiquadFilter(); bp.type='bandpass';
+  bp.frequency.value=3000+Math.random()*1200; bp.Q.value=0.9;
+  const g=ctx.createGain();
+  g.gain.setValueAtTime(0.15*intensity,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.038);
+  src.connect(bp); bp.connect(g); g.connect(ctx.destination);
+  src.start(); src.stop(ctx.currentTime+0.04);
+}
+
+function playChime(freq, delay){
+  if(!ctx) return;
+  const t = ctx.currentTime+(delay||0);
+  [freq, freq*1.5].forEach((f,i)=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.value=f;
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(i?0.06:0.12, t+0.01);
+    g.gain.exponentialRampToValueAtTime(0.001, t+1.8);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(t); o.stop(t+1.9);
+  });
+}
+
+function playDoneChime(){ [392,523,659,784].forEach((f,i)=>playChime(f,i*0.16)); }
+function playRoundChime(){ playChime(392,0); playChime(523,0.2); }
+
+// ── GAME DATA ──────────────────────────────────────────────────────
+// Segments render inline. Weak segments (w:true) are scratchable.
+// 'fix' is the replacement text that appears after scratching.
+// Empty fix '' = the word is simply deleted (no replacement shown).
+// The full sentence reads correctly with fix substituted for the weak text.
+
+const LETTERS = [
+  {
+    subject: 'Re: My Proposal',
+    from: 'jamie.l@company.com',
+    segments: [
+      {t:'Hi,\n\nI\'ve attached the proposal.'},
+      {t:' I\'m not sure if this is quite right, but', w:true, fix:'', why:'You\'re pre-emptively apologising for your own work. Send it without the disclaimer.'},
+      {t:' I think the budget works for Q3. Let me know'},
+      {t:' if that makes sense?', w:true, fix:'.', why:'Turning a statement into a question makes you sound unsure of what you just said.'},
+      {t:'\n\nThanks'}
+    ]
+  },
+  {
+    subject: 'Following Up',
+    from: 'priya.s@agency.com',
+    segments: [
+      {t:'Hi,\n\nFollowing up on last week\'s call.'},
+      {t:' Sorry for bothering you again —', w:true, fix:'', why:'Following up on your own work is not something to apologise for.'},
+      {t:' I wanted to confirm the start date is still Monday.\n\nPlease let me know'},
+      {t:' whenever you get a chance :)', w:true, fix:'.', why:'The smiley softens a reasonable request into a plea. Drop it.'},
+      {t:'\n\nBest'}
+    ]
+  },
+  {
+    subject: 'A Quick Idea',
+    from: 'sam.w@studio.com',
+    segments: [
+      {t:'Hi,\n\n'},
+      {t:'This is probably a silly idea, but', w:true, fix:'', why:'Calling your own idea silly before sharing it tells people not to take it seriously.'},
+      {t:' what if we moved the deadline to Thursday? It would give the team more breathing room.'},
+      {t:' You know what I mean?', w:true, fix:'', why:'Your point was clear. Asking this implies you don\'t trust your own writing.'},
+      {t:'\n\n'},
+      {t:'Just a thought.', w:true, fix:'', why:'"Just a thought" retroactively shrinks an idea you already committed to sending. If you sent it, you meant it.'},
+      {t:'\n\nSam'}
+    ]
+  },
+  {
+    subject: 'Checking In',
+    from: 'alex.r@company.com',
+    segments: [
+      {t:'Hi,\n\n'},
+      {t:'I hope this isn\'t a bad time.', w:true, fix:'', why:'Email is asynchronous. They\'ll read it when they\'re ready — no need to pre-apologise.'},
+      {t:' I wanted to share the revised figures. Revenue is up 12% this quarter, which'},
+      {t:' I think', w:true, fix:'', why:'"I think" hedges a fact. The numbers speak — you don\'t need to soften them.'},
+      {t:' is strong progress.\n\nRegards'}
+    ]
+  },
+  {
+    subject: 'Re: The Report',
+    from: 'morgan.k@firm.com',
+    segments: [
+      {t:'Hi,\n\nThe report is ready.'},
+      {t:' I might be wrong, but', w:true, fix:'', why:'You\'re not wrong — you wrote the report. Own what\'s in it.'},
+      {t:' the data shows a clear drop in March. I\'d recommend reviewing the onboarding flow.'},
+      {t:' Does that sound okay?', w:true, fix:'', why:'You made a recommendation. You don\'t need their permission to have made it.'},
+      {t:'\n\nThanks'}
+    ]
+  },
+  {
+    subject: 'Salary Review',
+    from: 'casey.t@work.com',
+    segments: [
+      {t:'Hi,\n\n'},
+      {t:'I\'m sorry to bring this up, but', w:true, fix:'', why:'Asking to be paid fairly is not something to apologise for.'},
+      {t:' I\'d like to discuss my salary. I\'ve taken on three new responsibilities this year and feel a review is due.\n\n'},
+      {t:'I hope that\'s okay? :)', w:true, fix:'', why:'"I hope that\'s okay" invites the reader to say no to something you\'ve already reasonably asked. The case was made — this just wobbles it.'},
+      {t:'\n\nCasey'}
+    ]
+  },
+  {
+    subject: 'Design Feedback',
+    from: 'robin.j@studio.com',
+    segments: [
+      {t:'Hi,\n\nHere are my notes on the designs.\n\n'},
+      {t:'I\'m no expert, but', w:true, fix:'', why:'You were asked for feedback. Disclaiming your expertise undermines the feedback before it lands.'},
+      {t:' the hero image feels too busy and the font size on mobile is too small.'},
+      {t:' Sorry if that\'s not helpful!', w:true, fix:'', why:'Your feedback was specific and useful. There\'s nothing to apologise for.'},
+      {t:'\n\nRobin'}
+    ]
+  },
+  {
+    subject: 'Re: Next Steps',
+    from: 'drew.m@co.com',
+    segments: [
+      {t:'Hi,\n\nBased on our call, the next step is to finalise the contract by Friday.'},
+      {t:' I just wanted to double-check that\'s still the plan?', w:true, fix:'', why:'"Just wanted to" shrinks a direct question. If you need to confirm something, confirm it.'},
+      {t:' Please send the signed version to legal.\n\n'},
+      {t:'Sorry for all the emails!', w:true, fix:'', why:'You\'re doing your job. Apologising for it trains people to see your communication as an inconvenience.'},
+      {t:'\n\nDrew'}
+    ]
+  }
+];
+
+// ── STATE ──────────────────────────────────────────────────────────
+let G = {
+  rounds:[], round:0, score:0,
+  totalScratched:0, roundScratched:0, roundTotal:0, roundPts:0,
+  hardMode: false
+};
+
+// ── SCREENS ────────────────────────────────────────────────────────
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+}
+
+function setMode(hard){
+  G.hardMode = hard;
+  document.getElementById('btn-normal').className = 'mode-btn'+(hard?'':' active');
+  document.getElementById('btn-hard').className   = 'mode-btn'+(hard?' hard-active':'');
+}
+
+// ── GAME FLOW ──────────────────────────────────────────────────────
+function startGame(){
+  ensureAudio();
+  G.rounds = [...LETTERS].sort(()=>Math.random()-0.5);
+  G.round=0; G.score=0; G.totalScratched=0;
+  document.getElementById('live-score').textContent='0';
+  document.getElementById('hard-badge').classList.toggle('show', G.hardMode);
+  document.getElementById('results-eyebrow').textContent = G.hardMode ? 'Hard mode — all done' : 'All done';
+  const switchBtn = document.getElementById('btn-switch-mode');
+  switchBtn.textContent = G.hardMode ? 'Try normal mode' : 'Try hard mode';
+  switchBtn.style.background = G.hardMode ? 'var(--sage)' : 'var(--red)';
+  showScreen('game');
+  loadRound();
+}
+
+function loadRound(){
+  // Kill all document-level scratch listeners from the previous round
+  if(scratchAbort) scratchAbort.abort();
+  scratchAbort = new AbortController();
+
+  const letter = G.rounds[G.round];
+  G.roundScratched=0; G.roundPts=0;
+  G.roundTotal = letter.segments.filter(s=>s.w).length;
+
+  document.getElementById('letter-subject').textContent = letter.subject;
+  document.getElementById('letter-from').textContent = 'from: '+letter.from;
+  document.getElementById('round-tag').textContent = 'Letter '+(G.round+1)+' of '+G.rounds.length;
+  document.getElementById('scratch-fill').style.width = '0%';
+  document.getElementById('tip').style.opacity='1';
+  document.getElementById('tip').innerHTML = G.hardMode
+    ? '<span class="breathe"></span>Find and scratch out the self-undermining phrases'
+    : '<span class="breathe"></span>Scratch away the red phrases';
+  document.getElementById('fact-bubble').classList.remove('show');
+  document.getElementById('well-done').classList.remove('show');
+
+  // Progress dots
+  const dots = document.getElementById('progress-dots');
+  dots.innerHTML='';
+  G.rounds.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='pdot'+(i<G.round?' done':i===G.round?' active':'');
+    dots.appendChild(d);
+  });
+
+  // Wire up Next button fresh (cloneNode removes old listeners)
+  const oldBtn = document.getElementById('btn-next');
+  const newBtn = oldBtn.cloneNode(true);
+  oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+  const isLast = G.round >= G.rounds.length-1;
+  newBtn.textContent = isLast ? 'See your score →' : 'Next letter →';
+  newBtn.addEventListener('click', isLast ? endGame : nextRound);
+
+  // Build letter body
+  const body = document.getElementById('letter-body');
+  body.innerHTML='';
+  body.classList.toggle('hard-mode', G.hardMode);
+
+  letter.segments.forEach(seg=>{
+    if(!seg.w){
+      // Plain text — split on \n to insert <br>
+      seg.t.split('\n').forEach((line,li,arr)=>{
+        body.appendChild(document.createTextNode(line));
+        if(li<arr.length-1) body.appendChild(document.createElement('br'));
+      });
+    } else {
+      // Extract leading/trailing spaces and render them outside the span
+      const raw = seg.t;
+      const leading  = raw.match(/^\s*/)[0];
+      const trailing = raw.match(/\s*$/)[0];
+      const inner    = raw.slice(leading.length, raw.length - trailing.length || undefined);
+
+      if(leading)  body.appendChild(document.createTextNode(leading));
+
+      // Scratchable word/phrase
+      const wrap = document.createElement('span');
+      wrap.className='scratchable';
+
+      const wordEl = document.createElement('span');
+      wordEl.className='word-text';
+      wordEl.textContent = inner;
+      wrap.appendChild(wordEl);
+
+      // Only show replacement span if fix is a non-empty string
+      if(seg.fix && seg.fix.trim()!==''){
+        const rep = document.createElement('span');
+        rep.className='replacement';
+        rep.textContent = seg.fix;
+        wrap.appendChild(rep);
+      }
+
+      const cvs = document.createElement('canvas');
+      wrap.appendChild(cvs);
+
+      setupScratch(wrap, cvs, seg);
+      body.appendChild(wrap);
+      if(trailing) body.appendChild(document.createTextNode(trailing));
+    }
+  });
+
+  // Entrance animation
+  const card = document.getElementById('letter-card');
+  card.classList.remove('letter-anim');
+  void card.offsetWidth;
+  card.classList.add('letter-anim');
+
+  playRoundChime();
+}
+
+// ── SCRATCH MECHANIC ───────────────────────────────────────────────
+let scratchAbort = null; // AbortController for document-level listeners
+
+function setupScratch(wrap, cvs, seg){
+  let active=false, lastX=0, lastY=0, inited=false, done=false;
+
+  function initCanvas(){
+    if(inited) return;
+    const wordRect = wrap.querySelector('.word-text').getBoundingClientRect();
+    const wrapRect = wrap.getBoundingClientRect();
+    cvs.width  = Math.ceil(wordRect.width);
+    cvs.height = Math.ceil(wordRect.height);
+    cvs.style.width  = cvs.width+'px';
+    cvs.style.height = cvs.height+'px';
+    cvs.style.left   = (wordRect.left - wrapRect.left)+'px';
+    cvs.style.top    = (wordRect.top  - wrapRect.top)+'px';
+    inited=true;
+  }
+
+  function coords(e){
+    const r=cvs.getBoundingClientRect();
+    const src=e.touches?e.touches[0]:e;
+    return{x:src.clientX-r.left, y:src.clientY-r.top};
+  }
+
+  function drawStroke(x,y){
+    if(!inited||done) return;
+    const c=cvs.getContext('2d');
+    c.globalCompositeOperation='source-over';
+    c.strokeStyle='rgba(165,40,12,0.65)';
+    c.lineWidth=6+Math.random()*4;
+    c.lineCap='round'; c.lineJoin='round';
+    c.beginPath();
+    c.moveTo(lastX||x, lastY||y);
+    c.lineTo(x,y);
+    c.stroke();
+    if(Math.random()>0.5){
+      c.globalAlpha=0.2+Math.random()*0.2;
+      c.lineWidth=2+Math.random()*3;
+      c.beginPath();
+      c.moveTo(x+Math.random()*12-6,y+Math.random()*5-2);
+      c.lineTo(x+Math.random()*12-6,y+Math.random()*5-2);
+      c.stroke();
+      c.globalAlpha=1;
+    }
+    lastX=x; lastY=y;
+    // Column sweep: divide width into slices, count how many have any ink
+    const c2=cvs.getContext('2d');
+    const cols=40;
+    const sliceW=cvs.width/cols;
+    const midY=Math.floor(cvs.height*0.2);
+    const midH=Math.ceil(cvs.height*0.6);
+    let covered=0;
+    for(let col=0;col<cols;col++){
+      const x0=Math.floor(col*sliceW);
+      const w=Math.max(1,Math.floor(sliceW));
+      const slice=c2.getImageData(x0,midY,w,midH).data;
+      for(let i=3;i<slice.length;i+=4){
+        if(slice[i]>15){ covered++; break; }
+      }
+    }
+    if(covered/cols>=0.95 && !done) finishScratch();
+  }
+
+  function finishScratch(){
+    if(done) return;
+    done=true;
+    wrap.classList.add('scratched');
+    G.roundScratched++;
+    G.totalScratched++;
+    const pts = G.hardMode ? 200 : 120;
+    G.score+=pts; G.roundPts+=pts;
+    document.getElementById('live-score').textContent=G.score;
+
+    // Show fact bubble
+    const fb = document.getElementById('fact-bubble');
+    document.getElementById('fact-text').textContent=seg.why||'Stronger without it.';
+    fb.querySelector('.fact-label').textContent = G.hardMode ? 'Why it\'s weak (+200 pts)' : 'Why it\'s weak';
+    fb.classList.add('show');
+
+    playChime(600+G.roundScratched*40, 0.05);
+    updateProgress();
+
+    if(G.roundScratched>=G.roundTotal){
+      setTimeout(showWellDone, 700);
+    }
+  }
+
+  const signal = scratchAbort.signal;
+
+  // Mouse
+  wrap.addEventListener('mousedown', e=>{
+    if(done) return;
+    ensureAudio(); initCanvas(); active=true;
+    const {x,y}=coords(e); lastX=x; lastY=y;
+    drawStroke(x,y); playScratch(0.8);
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e=>{
+    if(!active||done) return;
+    const {x,y}=coords(e);
+    drawStroke(x,y); playScratch(0.6+Math.random()*0.4);
+    updateProgress();
+  }, {signal});
+  document.addEventListener('mouseup', ()=>{ active=false; lastX=0; lastY=0; }, {signal});
+
+  // Touch
+  wrap.addEventListener('touchstart', e=>{
+    if(done) return;
+    ensureAudio(); initCanvas(); active=true;
+    const {x,y}=coords(e); lastX=x; lastY=y;
+    drawStroke(x,y); playScratch(0.9);
+    e.preventDefault();
+  },{passive:false});
+  document.addEventListener('touchmove', e=>{
+    if(!active||done) return;
+    const {x,y}=coords(e);
+    drawStroke(x,y); playScratch(0.7+Math.random()*0.3);
+    updateProgress();
+    e.preventDefault();
+  },{passive:false, signal});
+  document.addEventListener('touchend', ()=>{ active=false; lastX=0; lastY=0; }, {signal});
+}
+
+function updateProgress(){
+  const all=document.querySelectorAll('.scratchable');
+  let n=0;
+  all.forEach(s=>{ if(s.classList.contains('scratched')) n++; });
+  const pct=G.roundTotal>0?(n/G.roundTotal)*100:0;
+  document.getElementById('scratch-fill').style.width=Math.min(pct,100)+'%';
+}
+
+function showWellDone(){
+  document.getElementById('tip').style.opacity='0';
+  document.getElementById('pts-earned').textContent=G.roundPts;
+  const wd = document.getElementById('well-done');
+  wd.classList.add('show');
+  wd.scrollIntoView({behavior:'smooth', block:'nearest'});
+  playDoneChime();
+}
+
+function nextRound(){
+  ensureAudio();
+  G.round++;
+  loadRound();
+}
+
+function endGame(){
+  showScreen('results');
+  document.getElementById('r-score').textContent=G.score;
+  document.getElementById('r-scratched').textContent=G.totalScratched;
+  document.getElementById('r-letters').textContent=G.rounds.length;
+  const total=G.rounds.reduce((a,r)=>a+r.segments.filter(s=>s.w).length,0);
+  const pct=total?Math.round((G.totalScratched/total)*100):0;
+  const tag=pct>=90?'Ruthless clarity':pct>=75?'Strong editor':pct>=60?'Solid instincts':pct>=40?'Getting sharper':'Keep practising';
+  document.getElementById('r-tag').textContent=tag+' — '+pct+'% cleared';
+  playDoneChime();
+}
+
+function shareLinkedIn(){
+  const total = G.rounds.reduce((a,r)=>a+r.segments.filter(s=>s.w).length,0);
+  const pct = total ? Math.round((G.totalScratched/total)*100) : 0;
+  const siteUrl = 'https://mirri66.github.io/weakspeak.html';
+  const text = `Weakspeak is a 2-minute game about removing the words you use to make yourself smaller.\nTry it here: ${siteUrl}`;
+  const a = document.createElement('a');
+  a.href = 'https://www.linkedin.com/feed/?shareActive=true&text='+encodeURIComponent(text);
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function howToPlay(){
+  document.getElementById('htp-modal').classList.add('open');
+}
+
+function closeHTP(e){
+  if(!e || e.target===document.getElementById('htp-modal')){
+    document.getElementById('htp-modal').classList.remove('open');
+  }
+}
+</script>
+</body>
+</html>
